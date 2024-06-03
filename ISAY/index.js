@@ -156,7 +156,7 @@ console.log('Carga imagenes')
 
 console.log(datos)
 
-*/
+
 
 //EJEMPLO CON ASYNC AWAINT
 const ul= document.createElement('ul')
@@ -176,3 +176,57 @@ cargarDatos()
 console.log('Cargando HTML')
 console.log('carga CSS')
 console.log('Carga imagenes')
+
+
+
+//examen
+
+// Declarar el arreglo
+let numeros = [9, 2, 8, 7, 5, 6, 6, 1, 3, 4, 2, 8, 1, 7, 6];
+
+// Función asíncrona para generar el arreglo de pares
+async function filtrarPares(numeros) {
+  let pares = numeros.filter(num => num % 2 === 0);
+  return pares;
+}
+
+// Función principal para ejecutar la tarea asíncrona y mostrar los resultados
+async function main() {
+  let pares = await filtrarPares(numeros);
+  console.log("Arreglo original:", numeros);
+  console.log("Arreglo de pares:", pares);
+}
+
+// Ejecutar la función principal
+main();
+*/
+
+// Declarar el arreglo
+let estudiantes = [
+    { name: 'Mane', age: 15 },
+    { name: 'Andrea', age: 22 },
+    { name: 'Alma', age: 19 },
+    { name: 'Emma', age: 29 },
+    { name: 'Maria', age: 13 },
+    { name: 'Luis', age: 16 },
+    { name: 'Yair', age: 21 }
+  ];
+  
+  // Función asíncrona para filtrar los estudiantes mayores de 18 años y guardar sus nombres
+  async function filtrarEstudiantesMayores(estudiantes) {
+    let nombresMayores = estudiantes
+      .filter(estudiante => estudiante.age > 18)
+      .map(estudiante => estudiante.name);
+    return nombresMayores;
+  }
+  
+  // Función principal para ejecutar la tarea asíncrona y mostrar los resultados
+  async function main() {
+    let nombresMayores = await filtrarEstudiantesMayores(estudiantes);
+    console.log("Arreglo original:", estudiantes);
+    console.log("Nombres de estudiantes mayores de 18 años:", nombresMayores);
+  }
+  
+  // Ejecutar la función principal
+  main();
+  
