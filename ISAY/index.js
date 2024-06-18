@@ -176,7 +176,7 @@ cargarDatos()
 console.log('Cargando HTML')
 console.log('carga CSS')
 console.log('Carga imagenes')
-
+*/
 
 
 //examen
@@ -199,7 +199,7 @@ async function main() {
 
 // Ejecutar la función principal
 main();
-*/
+/*
 
 // Declarar el arreglo
 let estudiantes = [
@@ -229,4 +229,4 @@ let estudiantes = [
   
   // Ejecutar la función principal
   main();
-  
+  */
