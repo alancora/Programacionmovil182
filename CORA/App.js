@@ -1,153 +1,164 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, TextInput, Modal, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
+import { Button, Modal, StyleSheet, Text, TextInput, View, TouchableOpacity, ImageBackground } from 'react-native';
 
-const CustomTextInput = ({ label, placeholder, value, onChangeText, secureTextEntry }) => {
-  return (
-    <View style={styles.inputContainer}>
-      <Text style={styles.label}>{label}:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder={placeholder}
-        value={value}
-        onChangeText={onChangeText}
-        secureTextEntry={secureTextEntry}
-      />
-    </View>
-  );
-};
-
-const App = () => {
-  const [nombre, setNombre] = useState('');
-  const [correo, setCorreo] = useState('');
-  const [contrasena, setContrasena] = useState('');
+export default function App() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handlePress = () => {
+  const handleSubmit = () => {
     setModalVisible(true);
   };
 
-  const closeModal = () => {
-    setModalVisible(false);
-  };
-
   return (
-    <View style={styles.container}>
-      <CustomTextInput
-        label="Nombre"
-        placeholder="Escribe tu nombre"
-        value={nombre}
-        onChangeText={setNombre}
-      />
-      <CustomTextInput
-        label="Correo"
-        placeholder="Escribe tu correo"
-        value={correo}
-        onChangeText={setCorreo}
-        keyboardType="email-address"
-      />
-      <CustomTextInput
-        label="Contraseña"
-        placeholder="Escribe tu contraseña"
-        value={contrasena}
-        onChangeText={setContrasena}
-        secureTextEntry
-      />
-      <TouchableOpacity style={styles.saveButton} onPress={handlePress}>
-        <Text style={styles.saveButtonText}>Guardar...</Text>
-      </TouchableOpacity>
-      <StatusBar style="auto" />
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={closeModal}
-      >
-        <View style={styles.modalBackground}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Formulario enviado</Text>
-            <Text>Nombre: {nombre}</Text>
-            <Text>Correo: {correo}</Text>
-            <Text>Contraseña: {contrasena}</Text>
-            <TouchableOpacity style={styles.button} onPress={closeModal}>
-              <Text style={styles.buttonText}>Cerrar</Text>
-            </TouchableOpacity>
-          </View>
+    <ImageBackground source={require('./assets/bayer.jpg')} style={styles.background}>
+      <View style={styles.container}>
+        <View style={styles.formContainer}>
+          <Text style={styles.label}>Nombre:</Text>
+          <TextInput
+            style={styles.input}
+            value={name}
+            onChangeText={text => setName(text)}
+            placeholder="Ingresa tu nombre"
+          />
+          <Text style={styles.label}>Email:</Text>
+          <TextInput
+            style={styles.input}
+            value={email}
+            onChangeText={text => setEmail(text)}
+            placeholder="Ingresa tu email"
+            keyboardType="email-address"
+          />
+          <Text style={styles.label}>Contraseña:</Text>
+          <TextInput
+            style={styles.input}
+            value={password}
+            onChangeText={text => setPassword(text)}
+            placeholder="Ingresa tu contraseña"
+            secureTextEntry
+          />
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Enviar</Text>
+          </TouchableOpacity>
         </View>
-      </Modal>
-    </View>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Datos del formulario:</Text>
+              <Text style={styles.modalData}>Nombre: {name}</Text>
+              <Text style={styles.modalData}>Email: {email}</Text>
+              <Text style={styles.modalData}>Contraseña: {password}</Text>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.buttonText}>Cerrar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </View>
+    </ImageBackground>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
+    padding: 20,
   },
-  inputContainer: {
-    width: '80%',
-    marginBottom: 20, 
+  formContainer: {
+    width: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 18,
+    marginBottom: 5,
+    alignSelf: 'flex-start',
   },
   input: {
     height: 40,
-    borderBottomWidth: 2,
-    borderBottomColor: 'black',
-    marginBottom: 10, 
-  },
-  label: {
-    fontSize: 16,
-    color: 'green', 
-    marginBottom: 4,
-  },
-  saveButton: {
-    backgroundColor: 'red',
-    padding: 10,
+    width: '100%',
+    borderColor: 'gray',
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    marginBottom: 20,
     borderRadius: 5,
-    marginTop: 20,
+    backgroundColor: '#fff',
   },
-  saveButtonText: {
-    color: 'white',
-    fontSize: 16,
-    textAlign: 'center',
+  button: {
+    backgroundColor: '#1e90ff',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 10,
+    width: '100%',
   },
-  modalBackground: {
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+  },
+  centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    marginTop: 22,
   },
-  modalContainer: {
-    width: 300,
-    padding: 20,
+  modalView: {
+    margin: 20,
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 20,
+    padding: 35,
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
+  modalText: {
+    fontSize: 20,
+    marginBottom: 15,
+    textAlign: 'center',
   },
-  button: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: 'red',
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: 'white',
+  modalData: {
     fontSize: 16,
+    marginBottom: 5,
   },
+  buttonClose: {
+    backgroundColor: '#d9534f',
+    marginTop: 15,
+  },
+  background: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center"
+  }
 });
-
-export default App;
-
-
-
-
-
-
