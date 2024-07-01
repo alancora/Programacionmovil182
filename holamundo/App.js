@@ -1,31 +1,38 @@
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'; 
-
-
-const Texto = ({ estilo }) => {
-  const [contenido, setContenido] = useState('HolaMundo');
-
-  
-  const actualizarContenido = () => {
-    setContenido('State actualizo este texto');
-  };
-
-  return (
-    <TouchableOpacity onPress={actualizarContenido}>
-      <Text style={[styles.text, estilo]}>{contenido}</Text>
-    </TouchableOpacity>
-  );
-};
+import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native';
 
 export default function App() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => response.json())
+      .then(data => {
+        setUsers(data);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size='large' color='#0000ff' />
+        <Text>Cargando...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      {/* Renderizando el componente Texto con diferentes estilos */}
-      <Texto estilo={styles.red} />
-      <Texto estilo={styles.green} />
-      <Texto estilo={styles.blue} />
-
+      <FlatList
+        data={users}
+        renderItem={({ item }) => (
+          <Text style={styles.item}>{item.username}</Text>
+        )}
+        keyExtractor={item => item.id.toString()}
+      />
       <StatusBar style="auto" />
     </View>
   );
@@ -34,29 +41,19 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
     backgroundColor: '#fff',
+    paddingTop: 40,
+  },
+  item: {
+    padding: 10,
+    fontSize: 24,
+    height: 50,
+    borderColor: 'blue',
+    borderBottomWidth: 1,
+  },
+  center: {
+    flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
-  text: {
-    color: 'yellow',
-    fontSize: 25,
-    height: 150,
-    width: 150,
-    textAlign: 'center', 
-    textAlignVertical: 'center', 
-  },
-  red: {
-    flex: 1, 
-    backgroundColor: 'blue',
-  },
-  green: {
-    flex: 2, 
-    backgroundColor: 'red',
-  },
-  blue: {
-    flex: 3, 
-    backgroundColor: 'blue',
-  },
+    justifyContent: 'center',
+  },
 });
